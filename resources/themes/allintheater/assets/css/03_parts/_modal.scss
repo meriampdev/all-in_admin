@@ -1,0 +1,47 @@
+.inquiry-complete {
+  position: fixed;
+  display: none;
+  opacity: 0;
+  &.sended {
+    display: block;
+    // background: rgba(0, 0, 0, 0.3);
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    opacity: 1;
+  }
+
+  .modal {
+    background-color: #fff;
+    border-radius: 8px;
+    color: #494949;
+    margin: auto 0;
+    padding: 40px 80px;
+    width: 480px;
+    max-width: 480px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: relative;
+    z-index: 20;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.3);
+    .message {
+      font-size: 20px;
+      font-weight: bold;
+      width: 100%;
+      text-align: center;
+    }
+    .close {
+      cursor: pointer;
+      font-size: 18px;
+      margin-top: 16px;
+      padding: 16px 16px 0;
+      width: 100%;
+      color: #2FEA90;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+}
