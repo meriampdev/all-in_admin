@@ -1,0 +1,36 @@
+// header
+
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  background: transparent;
+  padding: 40px 48px 40px 51px;
+
+  // &.inverted {
+  //   background-color: #fff;
+  //   box-shadow: 0 3px 5px 0.3px rgba(0,0,0,0.1);
+  // }
+
+  @include devices(tablet) {
+    padding: 25px 30px;
+    .row {
+      display: none;
+    }
+  }
+
+  .brand-name {
+    width: 122px;
+    height: 16px;
+  }
+
+  .nav-item {
+    font-family: 'Avenir Next', 'Avenir Next LT Pro', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 22px;
+    color: #494949;
+  }
+}

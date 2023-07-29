@@ -1,0 +1,107 @@
+// footer
+
+.footer {
+  height: 505px;
+  padding: 64px 60px 71px;
+  background-color: #fff;
+
+  @include devices(tablet) {
+    padding: 26px 28px;
+    height: 736px;
+  }
+
+  .footer-content {
+    width: 100%;
+    height: 370px;
+    border-radius: 30px;
+    background: #efefef;
+    padding: 50px 0 40px 53px;
+    position: relative;
+
+    @include devices(tablet) {
+      height: 683px;
+      padding: 23px 27px;
+    }
+
+    .col-just-between {
+      @include devices(tablet) {
+        height: 250px;
+      }
+    }
+
+    .bg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 47.5%;
+
+      background-image: url('/wp-content/themes/allintheater/assets/images/footerbg.webp');
+      background-repeat: no-repeat;
+      background-size: cover;
+      border-bottom-right-radius: 30px;
+
+      @include devices(tablet) {
+        border-bottom-left-radius: 30px;
+        border-bottom-right-radius: 30px;
+        top: unset;
+        bottom: 0;
+        left: 0;
+        height: 370px;
+        width: 100%;
+        background-image: url('/wp-content/themes/allintheater/assets/images/footerbg_sp.webp');
+      }
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      grid-gap: 20px;
+    }
+
+    .brand {
+      // font-family: 'Avenir Next';
+      // font-style: normal;
+      // font-weight: 700;
+      // font-size: 20px;
+      // line-height: 27px;
+      // color: #494949;
+      width: 122px;
+      height: 16px;
+    }
+
+    .navs {
+      display: flex;
+      flex-direction: row;
+      grid-gap: 12px 50px;
+      flex-wrap: wrap;
+      width: 52.5%;
+
+      @include devices(tablet) {
+        flex-direction: column;
+        grid-gap: 14px;
+      }
+    }
+    .nav-item {
+      font-family: 'Avenir Next', 'Avenir Next LT Pro', sans-serif;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 22px;
+      color: #494949;
+
+      @include devices(tablet) {
+        font-weight: 500;
+      }
+    }
+
+    .copyright {
+      font-family: 'Avenir Next', 'Avenir Next LT Pro', sans-serif;
+      color: #494949;
+      font-style: normal;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 22px;
+    }
+  }
+}

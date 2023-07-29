@@ -1,0 +1,1589 @@
+// index
+// @font-face {
+//   font-family: 'Avenir Next';
+//   src: url('/wp-content/themes/allintheater/assets/fonts/AvenirNextFont.ttf')  format('truetype');
+// }
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body,
+.content {
+  overflow-x: hidden;
+  font-family: 'Avenir Next', 'Avenir Next LT Pro', 'Noto Sans JP', sans-serif;
+}
+
+input,
+select,
+textarea {
+  font-family: 'Avenir Next', 'Avenir Next LT Pro', 'Noto Sans JP', sans-serif;
+}
+
+.row-just-between {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.col-just-between {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+.sp {
+  display: none;
+
+  @include devices(mobile) {
+    display: block;
+  }
+}
+
+.pc {
+  display: block;
+
+  @include devices(mobile) {
+    display: none;
+  }
+}
+
+.arrow-link {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  grid-gap: 15px;
+
+  .link-icon {
+    width: 52px;
+    height: 52px;
+
+    @include devices(mobile) {
+      width: 36px;
+      height: 36px;
+    }
+  }
+
+  .link-text {
+    font-family: 'Noto Sans JP';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 160%;
+    color: #2fea90;
+
+    @include devices(mobile) {
+      font-size: 14px;
+    }
+  }
+}
+
+.content {
+  margin: 0 auto;
+
+  &__section {
+    position: relative;
+    max-width: 1440px;
+    margin: 0 auto;
+    @include devices(mobile) {
+      width: 100vw;
+      max-width: 100vw;
+    }
+
+    &.mainmv {
+      // height: 835px;
+
+      @include devices(desktop) {
+        max-width: none;
+      }
+
+      @include devices(mobile) {
+        height: 100vh;
+      }
+    }
+  }
+  .main-mv {
+    position: fixed;
+    // height: 948px;
+    width: 100%;
+    height: 100vh;
+    max-height: 960px;
+    top: 0;
+    left: 0;
+    background-image: url('/wp-content/themes/allintheater/assets/images/main_mv.webp');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 68%;
+    z-index: -1;
+
+    @include devices(desktop) {
+      // max-height: none;
+      // min-height: 960px;
+      // background-image: url('/wp-content/themes/allintheater/assets/images/main_mv1920.webp');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    @include devices(mobile) {
+      // height: 583px;
+      background-image: url('/wp-content/themes/allintheater/assets/images/main_mv_sp.webp');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .content__section {
+      height: 100vh;
+      max-height: 960px;
+    }
+
+    $line-height: 31px;
+    $line-height-abs: -31px;
+    .scroll-to-explore {
+      position: absolute;
+      left: 98px;
+      bottom: 12%;
+      font-family: 'Avenir Next', 'Avenir Next LT Pro', sans-serif;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 25px;
+      color: #2fea90;
+
+      // @include devices(desktop) {
+      //   left: 94px;
+      //   bottom: 60px;
+      // }
+
+      @include devices(mobile) {
+        // top: inherit;
+        bottom: 20%;
+        left: 34px;
+        font-style: italic;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 16px;
+      }
+
+      &::after {
+        content: '';
+        /*描画位置*/
+        position: absolute;
+        top: 0;
+        /*線の形状*/
+        width: 1px;
+        height: 60px;
+        background: #2fea90;
+        /*線の動き1.4秒かけて動く。永遠にループ*/
+        animation: pathmove 1.4s ease-in-out infinite;
+        opacity: 0;
+        margin-top: 24px;
+        left: 50%;
+
+        @include devices(mobile) {
+          height: 30px;
+          margin-top: 16px;
+        }
+      }
+
+      .bar {
+        margin-top: 38px;
+        margin-left: 67px;
+        width: 1px;
+        height: $line-height;
+        border: 1px solid #fff;
+
+        @include devices(mobile) {
+          margin-top: 36px;
+          margin-left: 44px;
+          height: 23px;
+        }
+
+        &-scroll {
+          width: 2px;
+          height: 106%;
+          margin-top: -1px;
+          margin-left: -1px;
+          display: block;
+          background: linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 1) 50%,
+            rgba(255, 255, 255, 0) 50%
+          );
+          background-position: 0 $line-height-abs;
+          background-size: 100% 200%;
+          animation: scrolldown 2.2s cubic-bezier(0.76, 0, 0.3, 1) forwards
+            infinite;
+        }
+      }
+    }
+
+    /*高さ・位置・透過が変化して線が上から下に動く*/
+    @keyframes pathmove {
+      0% {
+        height: 0;
+        top: 0;
+        opacity: 0;
+      }
+      30% {
+        height: 30px;
+        opacity: 1;
+      }
+      100% {
+        height: 0;
+        top: 50px;
+        opacity: 0;
+      }
+    }
+
+    @keyframes scrolldown {
+      0% {
+        background-position: 0 $line-height-abs;
+      }
+      75% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: 0 $line-height;
+      }
+    }
+
+    .hero {
+      padding-top: 34vh;
+      // padding-top: 394px;
+      text-align: center;
+      color: #494949;
+
+      // @include devices(desktop) {
+      //   padding-top: 34vh;
+      // }
+
+      @include devices(tablet) {
+        padding-top: 45%;
+      }
+
+      @include devices(mobile) {
+        padding-top: 40vh;
+      }
+
+      .block1 {
+        font-family: 'Noto Sans JP', sans-serif;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 26px;
+        line-height: 140%;
+
+        @include devices(desktop) {
+          font-size: 32.5px;
+        }
+
+        @include devices(tablet) {
+          font-size: 28px;
+        }
+
+        @include devices(mobile) {
+          font-size: 14px;
+        }
+      }
+
+      .block2 {
+        margin-top: 17px;
+        font-family: 'Avenir Next', 'Avenir Next LT Pro', sans-serif;
+        font-style: italic;
+        font-weight: 700;
+        font-size: 70px;
+        line-height: 140%;
+        text-align: center;
+        margin-left: 1vw;
+
+        @include devices(desktop) {
+          font-size: 87.5px;
+          margin-top: 7px;
+        }
+
+        @include devices(tablet) {
+          font-size: 40px;
+        }
+
+        @include devices(mobile) {
+          margin-top: 16px;
+          font-size: 20px;
+        }
+      }
+    }
+  }
+
+  #who-we-are {
+    margin-top: 100vh;
+    position: relative;
+    // height: 1046px;
+    padding-bottom: 179px;
+
+    background-image: url('/wp-content/themes/allintheater/assets/images/who-we-are/who-we-are.webp');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    border-top-left-radius: 80px;
+    border-top-right-radius: 80px;
+
+    @include devices(mobile) {
+      // margin-top: 0;
+      padding-bottom: 129px;
+      // min-height: 985px;
+      height: auto;
+      background-image: url('/wp-content/themes/allintheater/assets/images/who-we-are/who-we-are_sp.webp');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-color: #fff;
+      border-top-left-radius: 40px;
+      border-top-right-radius: 40px;
+    }
+    @include devices(mobile) {
+      margin-top: 0;
+    }
+
+    .rotated-text {
+      position: absolute;
+      top: 256px;
+      left: 208px;
+      font-family: 'Avenir Next', 'Avenir Next LT Pro', sans-serif;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 27px;
+      color: #2fea90;
+      transform: rotate(-90deg);
+
+      @include devices(tablet) {
+        font-weight: 500;
+        top: 148px;
+        left: -24px;
+        // padding-left: 25px;
+        font-size: 18px;
+      }
+
+      @include devices(mobile) {
+        font-weight: 500;
+        top: 134px;
+        left: -16px;
+        // padding-left: 25px;
+        font-size: 16px;
+      }
+    }
+
+    .content {
+      // position: absolute;
+      // top: 191px;
+      // left: 324px;
+      padding-top: 180px;
+      margin-left: 324px;
+
+      @include devices(tablet) {
+        padding-top: 92px;
+        // margin: 0 56px 63px;
+        margin: 0;
+
+        // top: 92px;
+        // left: 28px;
+      }
+
+      .main-text {
+        font-family: 'Noto Sans JP', sans-serif;
+        font-style: normal;
+        font-weight: 900;
+        font-size: 56px;
+        line-height: 140%;
+        color: #494949;
+
+        @include devices(tablet) {
+          font-size: 40px;
+          padding: 0 58px 0 60px;
+          // margin-left: 31px;
+        }
+
+        @include devices(mobile) {
+          font-size: 28px;
+          padding: 0 58px 0 60px;
+          // margin-left: 31px;
+        }
+      }
+
+      .sub-text {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 160%;
+        color: #494949;
+        max-width: 540px;
+        margin-top: 34px;
+
+        @include devices(tablet) {
+          margin-top: 61px;
+          // max-width: 320px;
+          // padding: 0 27px 0 28px;
+          padding: 0 21px 0 22px;
+          max-width: 100%;
+        }
+
+        @include devices(mobile) {
+          margin-top: 61px;
+          // max-width: 320px;
+          // padding: 0 27px 0 28px;
+          padding: 0 21px 0 22px;
+        }
+      }
+    }
+
+    .image-frames {
+      // position: absolute;
+      margin-top: 57px;
+      height: 332px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      border-bottom-left-radius: 40px;
+      border-bottom-right-radius: 40px;
+      overflow: hidden;
+
+      // @include devices(desktop) {
+      //   height: 443px;
+      // }
+
+      @include devices(tablet) {
+        margin-top: 40px;
+        // height: 280px;
+      }
+
+      img {
+        flex: 1;
+        width: 25%;
+        height: auto;
+        object-fit: cover;
+
+        @include devices(tablet) {
+          width: 75%;
+        }
+      }
+    }
+  }
+
+  #service {
+    position: relative;
+    // height: 407px;
+    height: 100%;
+
+    background-image: url('/wp-content/themes/allintheater/assets/images/service/s_bg.webp');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    @include devices(desktop) {
+      // height: 461px;
+    }
+
+    @include devices(tablet) {
+      min-height: 324px;
+      height: auto;
+      background-image: url('/wp-content/themes/allintheater/assets/images/service/s_bg_sp.webp');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .rotated-text {
+      position: absolute;
+      top: -26px;
+      left: 157px;
+      font-family: 'Avenir Next', 'Avenir Next LT Pro', sans-serif;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 27px;
+      color: #2fea90;
+      transform: rotate(-90deg);
+
+      @include devices(tablet) {
+        font-weight: 500;
+        top: -12px;
+        left: 0;
+      }
+    }
+
+    .skettt {
+      // position: absolute;
+      padding-top: 119px;
+      margin-left: 189px;
+
+      @include devices(desktop) {
+        padding-top: 180px;
+      }
+
+      @include devices(tablet) {
+        padding-top: 78px;
+        margin-left: 31px;
+      }
+
+      .skettt-logo {
+        width: 169px;
+        height: 36px;
+
+        @include devices(mobile) {
+          width: 124px;
+          height: 26px;
+        }
+      }
+
+      .logo-subtext {
+        margin-top: 26px;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 160%;
+        color: #494949;
+
+        @include devices(mobile) {
+          font-size: 14px;
+        }
+      }
+
+      .content-text {
+        margin-top: 21px;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 160%;
+        color: #494949;
+
+        @include devices(mobile) {
+          font-size: 20px;
+        }
+      }
+    }
+
+    .arrow-link {
+      // bottom: 8px;
+      // right: 16%;
+      // right: 342px;
+      position: relative;
+      margin-top: 44px;
+      padding-bottom: 64px;
+
+      &.pc {
+        @include devices(mobile) {
+          display: none;
+        }
+      }
+
+      &.sp {
+        display: none;
+        @include devices(mobile) {
+          display: flex;
+        }
+      }
+
+      // @include devices(desktop) {
+      //   bottom: 63px;
+      //   right: 582px;
+      // }
+
+      @include devices(mobile) {
+        right: unset;
+        bottom: 28px;
+        left: 32px;
+      }
+    }
+  }
+
+  .talents {
+    &.sp {
+      display: none;
+    }
+    @include devices(tablet) {
+      width: 100%;
+      max-width: 100%;
+
+      &.pc {
+        display: none;
+      }
+
+      &.sp {
+        display: inherit;
+      }
+    }
+  }
+
+  .service-vom {
+    position: relative;
+    aspect-ratio: 20 / 9;
+    // height: 648px;
+
+    // background-image: url('/wp-content/themes/allintheater/assets/images/service/vom_bg.webp');
+    // background-repeat: no-repeat;
+    // background-size: cover;
+
+    // @include devices(desktop) {
+    //   height: 864px;
+    // }
+
+    @include devices(tablet) {
+      // min-height: 700px;
+      height: auto;
+      background-color: #494949;
+      background-image: none;
+      // background-image: url('/wp-content/themes/allintheater/assets/images/service/vom_bg_sp.webp');
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .vom-content {
+      // position: absolute;
+      padding-top: 9.6vw; // 138px;
+      margin-left: 189px;
+
+      @include devices(tablet) {
+        padding-top: 62px;
+        margin-left: 28px;
+      }
+
+      .vom-logo {
+        width: 112px;
+        height: 36px;
+
+        @include devices(mobile) {
+          width: 80px;
+          height: 26px;
+        }
+      }
+
+      .logo-subtext {
+        margin-top: 21px;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 160%;
+        color: #ffffff;
+
+        @include devices(mobile) {
+          margin-top: 28px;
+          font-size: 14px;
+        }
+      }
+
+      .content-text {
+        margin-top: 35px;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 160%;
+        color: #ffffff;
+
+        @include devices(mobile) {
+          margin-top: 27px;
+          font-size: 20px;
+        }
+
+        .only-pc {
+          display: inline;
+
+          @include devices(tablet) {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .arrow-link {
+      margin: 44px 0 0 189px;
+      // padding-bottom: 180px;
+      position: relative;
+      // bottom: 177px;
+      // left: 190px;
+
+      @include devices(tablet) {
+        right: unset;
+        position: relative;
+        padding-top: 30px;
+        margin: 0;
+        margin-left: 28px;
+        padding-bottom: 0;
+      }
+    }
+
+    .bg-pc {
+      position: absolute;
+      top: 0;
+      left: 0;
+      aspect-ratio: 20 / 9;
+      width: 100%;
+      @include devices(tablet) {
+        display: none;
+      }
+    }
+    .bg-sp {
+      display: none;
+      @include devices(tablet) {
+        display: inherit;
+        width: 100%;
+      }
+    }
+  }
+
+  #culture {
+    // padding: 223px 0 76px 432px;
+    padding-top: 179px;
+    padding-bottom: 59px;
+    position: relative;
+    background-color: #fff;
+
+    @include devices(tablet) {
+      padding-top: 100px;
+    }
+
+    @include devices(mobile) {
+      padding-top: 70px;
+      padding-bottom: 31px;
+      // padding: 70px 23px 31px 59px;
+    }
+
+    .content__section {
+      padding: 0 29px 0 59px;
+
+      @include devices(tablet) {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      @include devices(mobile) {
+        display: inherit;
+      }
+    }
+
+    .content-label {
+      position: absolute;
+      top: 29px;
+      // left: 344px;
+      left: 23.9%;
+      font-family: 'Avenir Next', 'Avenir Next LT Pro', sans-serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 27px;
+      color: #2fea90;
+      transform: rotate(-90deg);
+
+      @include devices(tablet) {
+        position: relative;
+        display: inline-block;
+        top: -24px;
+        left: 0;
+        transform-origin: right bottom;
+        width: 15%;
+        height: 100%;
+        text-align: right;
+        margin-right: 10px;
+      }
+      @include devices(mobile) {
+        top: 21px;
+        left: 8px;
+        font-size: 16px;
+        line-height: 22px;
+        position: absolute;
+        display: inherit;
+        transform-origin: initial;
+        width: initial;
+        height: initial;
+        margin-right: initial;
+        text-align: initial;
+      }
+    }
+
+    .content {
+      font-style: normal;
+      font-weight: 700;
+      font-size: 36px;
+      line-height: 140%;
+      color: #494949;
+      // padding-left: 375px;
+      padding-left: 27.8%;
+
+      @include devices(tablet) {
+        padding-left: 0;
+        letter-spacing: 0;
+        overflow: hidden;
+        display: flex;
+        justify-content: flex-end;
+        margin: 0;
+      }
+
+      @include devices(mobile) {
+        padding-left: 0;
+        font-size: 20px;
+        letter-spacing: 0;
+        overflow: hidden;
+      }
+    }
+  }
+
+  .culture-img {
+    @include devices(tablet) {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  #culture-doc {
+    position: relative;
+    padding: 110px 116px 0 124px;
+    // height: 785px;
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+
+    iframe {
+      padding: 0 118px;
+      max-width: 1204px;
+    }
+
+    @include devices(tablet) {
+      padding: 28px;
+      // height: 207px;
+    }
+
+    img {
+      width: 1200px;
+      height: 675px;
+
+      @include devices(tablet) {
+        width: 320px;
+        height: 179.2px;
+      }
+    }
+
+    .content {
+      position: absolute;
+      bottom: 120px;
+      left: 216px;
+      color: #363636;
+
+      @include devices(tablet) {
+        bottom: 16px;
+        left: 50px;
+      }
+
+      .title {
+        font-size: 30px;
+        font-weight: bold;
+        margin-bottom: 13px;
+
+        @include devices(tablet) {
+          font-size: 8px;
+          margin-bottom: 3px;
+        }
+      }
+      .date {
+        font-weight: normal;
+        font-size: 18px;
+
+        @include devices(tablet) {
+          font-size: 8px;
+        }
+      }
+    }
+  }
+
+  #company {
+    padding-top: 203px;
+    background-color: #fff;
+    // padding: 0 186px 221px;
+
+    @include devices(tablet) {
+      padding-top: 92px;
+    }
+
+    @include devices(mobile) {
+      padding: 62px 27px 111px 28px;
+      // margin-bottom: 111px;
+    }
+
+    .content__section {
+      // padding: 0 186px 221px;
+      padding: 0 40px 221px;
+
+      @include devices(tablet) {
+        padding: 0 28px 221px;
+        width: 100%;
+        max-width: 100%;
+      }
+
+      @include devices(mobile) {
+        padding: 0;
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+
+    .rotated-text {
+      display: none;
+      position: absolute;
+      top: 24px;
+      left: 163px;
+      font-family: 'Avenir Next', 'Avenir Next LT Pro', sans-serif;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 27px;
+      color: #2fea90;
+      transform: rotate(-90deg);
+
+      @include devices(tablet) {
+        display: block;
+        top: 20px;
+        left: 8px;
+      }
+
+      @include devices(mobile) {
+        font-weight: 500;
+        top: 16px;
+        left: -10px;
+        font-size: 16px;
+      }
+    }
+
+    .title {
+      position: relative;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 36px;
+      line-height: 49px;
+      color: #494949;
+      margin: 0 auto;
+      padding-bottom: 55px;
+      padding-left: 37px;
+      max-width: 1068px;
+
+      @include devices(tablet) {
+        text-align: center;
+        margin: 0;
+        margin-bottom: 30px;
+        padding-left: 0;
+      }
+
+      @include devices(mobile) {
+        font-size: 26px;
+        text-align: center;
+        margin: 0;
+        margin-bottom: 30px;
+      }
+
+      &.rotated-text-pc {
+        &:before {
+          content: 'Team';
+          position: absolute;
+          top: 62px;
+          left: -32px;
+          font-family: 'Avenir Next', 'Avenir Next LT Pro', sans-serif;
+          font-style: normal;
+          font-weight: 700;
+          font-size: 20px;
+          line-height: 27px;
+          color: #2fea90;
+          transform: rotate(-90deg);
+          transform-origin: top left;
+          padding-top: 20px;
+
+          @include devices(tablet) {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .board-members {
+      display: flex;
+      justify-content: center;
+      max-width: 1068px;
+      margin: 0 auto;
+
+      .members {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        grid-gap: 72px 5%;
+
+        @include devices(tablet) {
+          grid-gap: 72px 8%;
+        }
+
+        @include devices(mobile) {
+          grid-gap: 69px 0;
+        }
+        .member {
+          // @include devices(mobile) {
+          //   flex: 1;
+          // }
+          width: 30%;
+
+          @include devices(tablet) {
+            width: 46%;
+          }
+
+          @include devices(mobile) {
+            width: 100%;
+          }
+
+          .member-pic {
+            width: 200px;
+            height: 200px;
+
+            @include devices(mobile) {
+              width: 150px;
+              height: 150px;
+              margin: 0 auto;
+            }
+          }
+
+          .member-info {
+            margin-top: 30px;
+
+            .en-name {
+              font-style: normal;
+              font-weight: 500;
+              font-size: 12px;
+              line-height: 160%;
+              color: #494949;
+            }
+            .jp-name {
+              font-style: normal;
+              font-weight: 500;
+              font-size: 20px;
+              line-height: 160%;
+              color: #494949;
+
+              .age {
+                font-style: normal;
+                font-size: 16px;
+                line-height: 160%;
+              }
+            }
+            .position {
+              font-style: normal;
+              font-weight: 500;
+              font-size: 16px;
+              line-height: 160%;
+              color: #494949;
+            }
+          }
+
+          .description {
+            position: relative;
+            margin-top: 13px;
+            // max-width: 300px;
+            font-style: normal;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 160%;
+            color: #494949;
+
+            @include devices(mobile) {
+              font-size: 12px;
+              max-height: 57px;
+              display: -webkit-box;
+              -webkit-line-clamp: 3;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+              width: 100%;
+              max-width: 100%;
+
+              &.open {
+                -webkit-line-clamp: inherit;
+                max-height: inherit;
+
+                label {
+                  display: none;
+                }
+              }
+            }
+
+            //
+            input {
+              display: none;
+            }
+            label {
+              display: none;
+            }
+
+            @include devices(mobile) {
+              label {
+                display: inherit;
+                position: absolute;
+                bottom: 3px;
+                right: 0;
+                cursor: pointer;
+                width: 28px;
+                height: 8px;
+                z-index: 1;
+                background-image: url('/wp-content/themes/allintheater/assets/images/svg/arrow.svg');
+                background-repeat: no-repeat;
+                background-position: right center;
+                background-color: #fff;
+                padding: 4px 6px 10px;
+
+                &:before {
+                  content: '...';
+                  box-sizing: content-box;
+                  position: absolute;
+                  display: inline-block;
+                  bottom: -4px;
+                  right: 13px;
+                  width: 16px;
+                  height: 20px;
+                  background-color: #fff;
+                  padding-right: 6px;
+                  padding-left: 3px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .team {
+      margin-top: 148px;
+      .title {
+        font-style: normal;
+        font-weight: 700;
+        font-size: 36px;
+        line-height: 49px;
+        color: #494949;
+
+        @include devices(mobile) {
+          font-size: 26px;
+          margin-bottom: 42px;
+        }
+      }
+
+      .team-members {
+        // margin-top: 44px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 90%;
+        justify-content: space-between;
+        margin: 0 auto;
+        max-width: 987px;
+        @include devices(tablet) {
+          grid-gap: 33px 20px;
+          width: inherit;
+        }
+
+        .member {
+          @include devices(tablet) {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+          }
+          .member-pic {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto;
+            margin-bottom: 18px;
+
+            @include devices(tablet) {
+              width: 120px;
+              height: 120px;
+            }
+          }
+          .member-info {
+            @include devices(tablet) {
+              text-align: center;
+            }
+
+            .en-name {
+              font-style: normal;
+              font-weight: 500;
+              font-size: 18px;
+              line-height: 160%;
+              color: #494949;
+
+              @include devices(tablet) {
+                font-size: 16px;
+              }
+            }
+            .position {
+              font-style: normal;
+              font-weight: 500;
+              font-size: 16px;
+              line-height: 160%;
+              color: #494949;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #location {
+    height: 758px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    @include devices(tablet) {
+      height: 1265px;
+    }
+
+    #map {
+      width: 41.7%;
+      height: 100%;
+
+      @include devices(tablet) {
+        height: 400px;
+        width: 100%;
+      }
+
+      .map {
+        &__object {
+          padding-right: 11px;
+          padding-bottom: 28px;
+        }
+        &__name {
+          font-size: 18px;
+          font-weight: 700;
+          font-family: 'Avenir Next', 'Avenir Next LT Pro', sans-serif;
+          background: rgba(255, 255, 255, 0.9);
+          box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.25);
+          backdrop-filter: blur(5px);
+          padding: 10px 20px;
+          border-radius: 10px;
+          // box-shadow: ;
+        }
+
+        &__arrow {
+          display: block;
+          width: 2px;
+          height: 40px;
+          background-color: #2fea90;
+          margin: 0 auto;
+
+          &:after {
+            content: '';
+            position: absolute;
+            width: 7px;
+            height: 7px;
+            background-color: #2fea90;
+            bottom: 22px;
+            right: 51%;
+          }
+        }
+      }
+    }
+
+    .company-info {
+      background: #393b44;
+      width: calc(100% - 41.7%);
+      height: 100%;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 160%;
+      color: #fcfcfc;
+      padding: 109px 132px 129px 110px;
+      display: flex;
+      flex-direction: column;
+      grid-gap: 30px;
+
+      @include devices(tablet) {
+        grid-gap: 20px;
+        width: 100%;
+        height: 865px;
+        padding: 33px 19px 0 24px;
+      }
+
+      .info-item {
+        display: flex;
+        flex-direction: row;
+        grid-gap: 21px;
+
+        @include devices(tablet) {
+          flex-direction: column;
+          grid-gap: 8px;
+        }
+
+        .label {
+          width: 112px;
+          white-space: nowrap;
+        }
+
+        .detail {
+          flex: 1;
+          font-weight: 500;
+          @include devices(tablet) {
+            font-weight: normal;
+          }
+        }
+      }
+    }
+  }
+
+  #teampic {
+    position: relative;
+    // height: 926px;
+    background-image: url('/wp-content/themes/allintheater/assets/images/teampicbg.webp');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    // @include devices(mobile) {
+    //   height: 352px;
+    // }
+
+    // .bg {
+    //   position: absolute;
+    //   top: 0;
+    //   left: 0;
+    //   z-index: 1;
+    // }
+
+    .swiper-container {
+      padding: 112px 120px 140px;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.5s ease-out;
+
+      @include devices(tablet) {
+        padding: 22px 27px 30px 28px;
+      }
+
+      // .swiper-wrapper {
+      //   max-height: 678px;
+      // }
+
+      .swiper-slide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        // display: none;
+
+        // &.swiper-slide-active {
+        //   display: flex;
+        //   justify-content: center;
+        //   align-items: center;
+        // }
+
+        picture {
+          display: block;
+          img {
+            width: 100%;
+            height: 100%;
+            // max-height: 713px;
+            object-fit: cover;
+            text-align: center;
+          }
+        }
+      }
+    }
+
+    .teampic {
+      position: absolute;
+      z-index: 2;
+      top: 107px;
+      left: 120px;
+      right: 120px;
+      width: 83.33%;
+
+      @include devices(tablet) {
+        top: 22px;
+        left: 28px;
+        width: 85.33%;
+      }
+    }
+  }
+
+  #contact {
+    position: relative;
+    // height: 782px;
+    background: #efefef;
+    padding: 169px 0 83px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    @include devices(tablet) {
+      // height: 831px;
+      padding: 132px 28px 28px;
+      grid-gap: 33px;
+    }
+
+    .rotated-text {
+      display: none;
+      position: absolute;
+      top: 32px;
+      left: 148px;
+      font-family: 'Avenir Next', 'Avenir Next LT Pro', sans-serif;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 27px;
+      color: #2fea90;
+      transform: rotate(-90deg);
+
+      @include devices(tablet) {
+        display: block;
+        font-weight: 500;
+        top: -72px;
+        left: -28px;
+        font-size: 20px;
+      }
+    }
+
+    .content__section {
+      width: 100%;
+      padding: 0 60px 0 64px;
+
+      @include devices(tablet) {
+        padding: 0;
+      }
+    }
+
+    .row {
+      position: relative;
+      width: 100%;
+      grid-gap: 158px;
+      max-width: 940px;
+      margin: 0 auto;
+
+      &.rotated-text-pc {
+        &:before {
+          content: 'Contact';
+          position: absolute;
+          top: 80px;
+          left: -74px;
+          font-family: 'Avenir Next', 'Avenir Next LT Pro', sans-serif;
+          font-style: normal;
+          font-weight: 700;
+          font-size: 20px;
+          line-height: 27px;
+          color: #2fea90;
+          transform: rotate(-90deg);
+          transform-origin: top left;
+          padding-top: 20px;
+
+          @include devices(tablet) {
+            display: none;
+          }
+        }
+      }
+
+      @include devices(tablet) {
+        flex-direction: column;
+        grid-gap: 26px;
+        flex-wrap: wrap;
+      }
+
+      &:nth-child(3) {
+        margin-top: 43px;
+        @include devices(tablet) {
+          margin-top: 26px;
+        }
+      }
+
+      &:nth-child(4) {
+        margin-top: 54px;
+        @include devices(tablet) {
+          margin-top: 26px;
+        }
+      }
+    }
+
+    .field {
+      flex: 1;
+      @include devices(tablet) {
+        width: 100%;
+      }
+
+      .label {
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 160%;
+        color: #494949;
+      }
+      .input-field {
+        input,
+        select {
+          width: 100%;
+          height: 50px;
+          border: none;
+          background: transparent;
+          border-bottom: 1px solid #1d1d1d;
+          font-size: 20px;
+
+          &:focus {
+            outline: none;
+          }
+        }
+
+        textarea {
+          width: 100%;
+          border: none;
+          background: transparent;
+          border-bottom: 1px solid #1d1d1d;
+          resize: none;
+          font-size: 20px;
+          &:focus {
+            outline: none;
+          }
+        }
+        .error {
+          display: none;
+          font-size: 14px;
+          margin-top: 8px;
+          color: #ff623e;
+          &.show {
+            display: inline-block;
+          }
+        }
+      }
+    }
+
+    .submit {
+      display: block;
+      margin: 0 auto;
+      margin-top: 46px;
+      width: 266px;
+      height: 71px;
+      left: 587px;
+      top: 628px;
+      border: 1px solid #1d1d1d;
+      border-radius: 20px;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 20px;
+      line-height: 160%;
+      color: #494949;
+      cursor: pointer;
+
+      @include devices(mobile) {
+        height: 71px;
+      }
+    }
+  }
+}
