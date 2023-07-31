@@ -77,6 +77,52 @@ add_action('after_setup_theme', function () {
 if( function_exists('acf_add_local_field_group') ):
 
     acf_add_local_field_group(array(
+        'key' => 'article_recruitment_voice',
+        'title' => 'Recruitment Voice',
+        'layout' => 'horizontal',
+        'fields' => array (
+            array (
+                'key' => 'recruitment_voice_title',
+                'label' => 'Title',
+                'name' => 'recruitment_voice_title',
+                'type' => 'text',
+                'layout' => 'horizontal',
+            ),
+            array (
+                'key' => 'recruitment_voice_description',
+                'label' => 'Description',
+                'name' => 'recruitment_voice_description',
+                'type' => 'text',
+                'layout' => 'horizontal',
+            ),
+            array (
+                'key' => 'recruitment_voice_url_link',
+                'label' => 'URL Link',
+                'name' => 'recruitment_voice_url_link',
+                'type' => 'link',
+                'layout' => 'horizontal',
+            ),
+            array (
+                'key' => 'recruitment_voice_image',
+                'label' => 'Image',
+                'name' => 'recruitment_voice_image',
+                'type' => 'image',
+                'layout' => 'horizontal',
+            )
+        ),
+        'location' => array (
+            array (
+                array (
+                    'param' => 'post_type',
+                    'operator' => '==',
+                    'value' => 'articles',
+                ),
+            ),
+        ),
+        'show_in_rest' => true,
+    ));
+
+    acf_add_local_field_group(array(
         'key' => 'article_control',
         'title' => 'Article Display Controls',
         'layout' => 'horizontal',
@@ -157,6 +203,16 @@ function add_thumbnail_to_JSON() {
             'schema'          => null,
         )
     );
+
+    register_rest_field( 
+        'articles', 
+        'recruitment_voice_image', 
+        array(
+            'get_callback'    => 'get_rv_image_src',
+            'update_callback' => null,
+            'schema'          => null,
+        )
+    );
 }
 
 function get_image_src( $object, $field_name, $request ) {
@@ -167,6 +223,15 @@ function get_image_src( $object, $field_name, $request ) {
   );
   return $feat_img_array[0];
 }
+
+function get_rv_image_src( $object, $field_name, $request ) {
+    $feat_img_array = wp_get_attachment_image_src(
+      $object['acf']['recruitment_voice_image'], 
+      'full',  
+      false
+    );
+    return $feat_img_array[0];
+  }
 
 
 /**

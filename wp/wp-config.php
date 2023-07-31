@@ -87,6 +87,7 @@ if ( ! defined( 'WP_DEBUG' ) ) {
 	define( 'WP_DEBUG', false );
 }
 
+define('COOKIE_DOMAIN', $_SERVER['HTTP_HOST'] );
 /* That's all, stop editing! Happy publishing. */
 
 /** Absolute path to the WordPress directory. */
