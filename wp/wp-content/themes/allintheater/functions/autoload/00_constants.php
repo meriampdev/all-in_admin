@@ -49,11 +49,11 @@ add_action('init', function () {
 =====================================
 株式会社allintheater
 
-TEL: 03-5324-2766
-MAIL: contact@allintheater.co.jp
-URL: https://allintheater.co.jp/
+TEL: 03-1234-2766
+MAIL: allin.theaterweb@gmail.com
+URL: http://dev.all-in.jyminc.com/
 
-〒150-0002
+123-1234
 東京都渋谷区渋谷三丁目7番2号
 第3矢木ビル 9階
 =====================================

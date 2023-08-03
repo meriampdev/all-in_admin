@@ -70,6 +70,11 @@ define( 'WP_DEBUG_LOG', true );
 define( 'WP_ENVIRONMENT_TYPE', 'local' );
 define( 'MWFORM_DEBUG', true );
 
+define( 'WPMS_SMTP_HOST', 'localhost' ); // The SMTP mail host.
+define( 'WPMS_SMTP_PORT', 25 ); // The SMTP server port number.
+define( 'WPMS_SSL', 'tls' ); // Possible values '', 'ssl', 'tls' - note TLS is not STARTTLS.
+define( 'WPMS_SMTP_AUTH', false ); // True turns it on, false turns it off.
+define( 'WPMS_SMTP_AUTOTLS', true ); // True turns it on, false turns it off.
 
 /**
  * For developers: WordPress debugging mode.

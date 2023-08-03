@@ -22,7 +22,7 @@ add_action( 'rest_api_init', function () {
       )
     ));
 
-    register_rest_route( 'api/v1/', 'term/(?P<term>[a-z0-9]+(?:-[a-z0-9]+)*)/(?P<slug>[a-z0-9]+(?:-[a-z0-9]+)*)', array(
+    register_rest_route( 'api/v1/', 'term/(?P<term>[a-z0-9]+(?:[-_][a-z0-9]+)*)/(?P<slug>[a-z0-9]+(?:-[a-z0-9]+)*)', array(
       'methods' => 'GET',
       'callback' => 'get_term_data',
       'args' => array(
@@ -79,6 +79,7 @@ function format_response($posts) {
 
     $post_acfs = get_fields($post->ID);
     $post->post_acfs = $post_acfs;
+    $post->order = $post_acfs['order'];
 
     $thumbnail = get_the_post_thumbnail_url($post->ID);
     $post->featured_image = $thumbnail;
@@ -100,6 +101,7 @@ function get_articles_by_tag(WP_REST_Request $request){
   $posts_by_tag = get_posts( $args );
   format_response($posts_by_tag);
 
+  usort($posts_by_tag, function($a, $b) {return strcmp($a->order, $b->order);});
   $response = new WP_REST_Response( $posts_by_tag );
 
   return $response;
@@ -117,7 +119,7 @@ function get_articles_by_category(WP_REST_Request $request){
   );
   $posts_by_tag = get_posts( $args );
   format_response($posts_by_tag);
-
+  usort($posts_by_tag, function($a, $b) {return strcmp($a->order, $b->order);});
   $response = new WP_REST_Response( $posts_by_tag );
 
   return $response;
@@ -142,7 +144,7 @@ function get_featured_articles(WP_REST_Request $request) {
 
   $data = get_posts( $args );
   format_response($data);
-
+  usort($posts_by_tag, function($a, $b) {return strcmp($a->order, $b->order);});
   $response = new WP_REST_Response( $data );
 
   return $response;
@@ -158,7 +160,7 @@ function get_selection_articles(WP_REST_Request $request) {
 
   $data = get_posts( $args );
   format_response($data);
-
+  usort($posts_by_tag, function($a, $b) {return strcmp($a->order, $b->order);});
   $response = new WP_REST_Response( $data );
 
   return $response;
@@ -174,7 +176,7 @@ function get_recommended_articles(WP_REST_Request $request) {
 
   $data = get_posts( $args );
   format_response($data);
-
+  usort($posts_by_tag, function($a, $b) {return strcmp($a->order, $b->order);});
   $response = new WP_REST_Response( $data );
 
   return $response;
@@ -218,9 +220,11 @@ function get_hot_tags(WP_REST_Request $request) {
       $tagImageSrc = wp_get_attachment_image_url( $meta_data['tagImage'][0], 'full' );
       $tag->tagImageSrc = $tagImageSrc;
       $tag->meta = $meta_data;
+      $tag->order = $meta_data['tagDisplayOrder'][0];
     }
 	}
 
+  usort($tags, function($a, $b) {return strcmp($a->order, $b->order);});
   $response = new WP_REST_Response( $tags );
 
   return $response;

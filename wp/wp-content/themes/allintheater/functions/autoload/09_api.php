@@ -30,10 +30,15 @@ function send_inquiry_email(WP_REST_Request $request) {
 
   $data = $request->get_json_params();
 
+
+  $inquiry_type = $data['inquiry_type'];
   $company_name = $data['company_name'];
-  $inquiry_item = $data['inquiry_item'];
+  $inquiry = $data['inquiry'];
   $name = $data['name'];
   $email = $data['email'];
+  $department_name = $data['department_name'];
+  $name_kanji = $data['name_kanji'];
+  $name_furigana = $data['name_furigana'];
   $inquiry = $data['inquiry'];
 
   $signature = SIGNATURE;
@@ -49,18 +54,21 @@ function send_inquiry_email(WP_REST_Request $request) {
 
 担当者からご連絡致しますので、今しばらくお待ちください。
 
-
+種別: $inquiry_type
 会社名: $company_name
-お問い合わせ項目: $inquiry_item
+お問い合わせ項目: $inquiry
 氏名: $name
 メールアドレス: $email
+部署名・部門名: $department_name
+氏名(漢字): $name_kanji
+氏名(ふりがな): $name_furigana
 お問い合わせ内容: $inquiry
 
 $signature
 EOM;
 
   // send Email
-  $r = wp_mail( $to, $subject, $message );
+  $r1 = wp_mail( $to, $subject, $message );
   // $r = wp_mail( $to, $subject, 'test mail' );
 
   $admin_message = <<<EOM
@@ -69,18 +77,22 @@ EOM;
 以下内容でお問い合わせがありましたので、対応お願いします。
 
 
+種別: $inquiry_type
 会社名: $company_name
-お問い合わせ項目: $inquiry_item
+お問い合わせ項目: $inquiry
 氏名: $name
 メールアドレス: $email
+部署名・部門名: $department_name
+氏名(漢字): $name_kanji
+氏名(ふりがな): $name_furigana
 お問い合わせ内容: $inquiry
 
 EOM;
 
   // send Email
-  $r = wp_mail( "contact@allintheater.co.jp", "【株式会社allintheater】お問い合せを受信しました。", $admin_message );
+  $r2 = wp_mail( "allin.theaterweb@gmail.com", "【株式会社allintheater】お問い合せを受信しました。", $admin_message );
 
-  $response = new WP_REST_Response();
+  $response = new WP_REST_Response(["success" => $r2]);
   $response->set_status(200);
   return $response;
 }
