@@ -28,7 +28,7 @@ function custom_post_type() {
           'description'         => __( 'Article news and reviews'),
           'labels'              => $labels,
           'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields'),
-          'taxonomies'          => array( 'category', 'post_tag' ),
+          'taxonomies'          => array( 'category' ),
           /* A hierarchical CPT is like Pages and can have
           * Parent and child items. A non-hierarchical CPT
           * is like Posts.
@@ -77,36 +77,50 @@ add_action('after_setup_theme', function () {
 if( function_exists('acf_add_local_field_group') ):
 
     acf_add_local_field_group(array(
-        'key' => 'article_recruitment_voice',
-        'title' => 'Recruitment Voice',
+        'key' => 'article_recruitment',
+        'title' => 'Recruitment',
         'layout' => 'horizontal',
         'fields' => array (
             array (
-                'key' => 'recruitment_voice_title',
+                'key' => 'recruitment_title',
                 'label' => 'Title',
-                'name' => 'recruitment_voice_title',
+                'name' => 'recruitment_title',
                 'type' => 'text',
                 'layout' => 'horizontal',
             ),
             array (
-                'key' => 'recruitment_voice_description',
+                'key' => 'recruitment_description',
                 'label' => 'Description',
-                'name' => 'recruitment_voice_description',
+                'name' => 'recruitment_description',
                 'type' => 'text',
                 'layout' => 'horizontal',
             ),
             array (
-                'key' => 'recruitment_voice_url_link',
-                'label' => 'URL Link',
-                'name' => 'recruitment_voice_url_link',
+                'key' => 'recruitment_email',
+                'label' => 'Email',
+                'name' => 'recruitment_email',
+                'type' => 'text',
+                'layout' => 'horizontal',
+            ),
+            array (
+                'key' => 'recruitment_url_link',
+                'label' => '採用ページへ',
+                'name' => 'recruitment_url_link',
                 'type' => 'link',
                 'layout' => 'horizontal',
             ),
             array (
-                'key' => 'recruitment_voice_image',
+                'key' => 'recruitment_image',
                 'label' => 'Image',
-                'name' => 'recruitment_voice_image',
+                'name' => 'recruitment_image',
                 'type' => 'image',
+                'layout' => 'horizontal',
+            ),
+            array (
+                'key' => 'application_requirements',
+                'label' => '募集要項',
+                'name' => 'application_requirements',
+                'type' => 'wysiwyg',
                 'layout' => 'horizontal',
             )
         ),
@@ -206,7 +220,7 @@ function add_thumbnail_to_JSON() {
 
     register_rest_field( 
         'articles', 
-        'recruitment_voice_image', 
+        'recruitment_image', 
         array(
             'get_callback'    => 'get_rv_image_src',
             'update_callback' => null,
@@ -226,7 +240,7 @@ function get_image_src( $object, $field_name, $request ) {
 
 function get_rv_image_src( $object, $field_name, $request ) {
     $feat_img_array = wp_get_attachment_image_src(
-      $object['acf']['recruitment_voice_image'], 
+      $object['acf']['recruitment_image'], 
       'full',  
       false
     );
@@ -250,9 +264,24 @@ function add_tag_data_to_json() {
             'schema'          => null,
         )
     );
+
+    register_rest_field( 
+        'articles', 
+        'post_categories', 
+        array(
+            'get_callback'    => 'get_cat_data',
+            'update_callback' => null,
+            'schema'          => null,
+        )
+    );
 }
 
 function get_tag_data( $object, $field_name, $request ) {
     $formatted_tags = get_the_tags($object->id);
+    return $formatted_tags;
+}
+
+function get_cat_data( $object, $field_name, $request ) {
+    $formatted_tags = get_the_category($object->id);
     return $formatted_tags;
 }

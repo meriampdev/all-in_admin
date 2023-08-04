@@ -208,12 +208,12 @@ function get_hot_tags(WP_REST_Request $request) {
     'hide_empty' => false
   );
 	$args = wp_parse_args( $args, $defaults = array() );
-	$tags = get_tags( $args );
+	$tags = get_categories( $args );
 
 	if ( empty( $tags ) ) {
 		$tags = array();
 	} else {
-		$tags = apply_filters( 'get_tags', $tags, $args );
+		$tags = apply_filters( 'get_categories', $tags, $args );
     
     foreach ($tags as $tag) {
       $meta_data = get_term_meta($tag->term_id);

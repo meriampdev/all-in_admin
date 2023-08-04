@@ -29,6 +29,7 @@ function ag_filter_post_json($response, $post, $context) {
 }
 add_filter( 'rest_prepare_post', 'ag_filter_post_json', 10, 3 );
 
+add_action( 'category_add_form_fields', 'rudr_add_term_fields' );
 add_action( 'post_tag_add_form_fields', 'rudr_add_term_fields' );
 function rudr_add_term_fields( $taxonomy ) {
 	?>
@@ -49,6 +50,7 @@ function rudr_add_term_fields( $taxonomy ) {
 	<?php
 }
 
+add_action( 'category_edit_form_fields', 'rudr_edit_term_fields', 10, 2 );
 add_action( 'post_tag_edit_form_fields', 'rudr_edit_term_fields', 10, 2 );
 function rudr_edit_term_fields( $term, $taxonomy ) {
 
@@ -94,6 +96,8 @@ function rudr_edit_term_fields( $term, $taxonomy ) {
 	</tr><?php
 }
 
+add_action( 'created_category', 'rudr_save_term_fields' );
+add_action( 'edited_category', 'rudr_save_term_fields' );
 add_action( 'created_post_tag', 'rudr_save_term_fields' );
 add_action( 'edited_post_tag', 'rudr_save_term_fields' );
 function rudr_save_term_fields( $term_id ) {
@@ -137,3 +141,24 @@ function rudr_include_js() {
 		array( 'jquery' )
 	);
 }
+
+
+// To show the column header
+function custom_column_header( $columns ){
+$columns['meta'] = 'Hot Tag'; 
+return $columns;
+}
+
+add_filter( "manage_edit-category_columns", 'custom_column_header', 10);
+
+// To show the column value
+function custom_column_content( $value, $column_name, $tax_id ){
+    $meta_data = get_term_meta($tax_id);
+    if($meta_data['isHotTag'][0]) {
+        return 'Yes';
+    } else {
+        return 'No';
+    }
+    // return $meta_data['isHotTag'][0];
+}
+add_action( "manage_category_custom_column", 'custom_column_content', 10, 3);
