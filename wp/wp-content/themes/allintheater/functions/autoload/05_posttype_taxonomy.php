@@ -5,6 +5,9 @@ function custom_term_meta_setup() {
     register_term_meta('', 'isHotTag', 
         array('show_in_rest' => true)
     );
+    register_term_meta('', 'showInTop', 
+        array('show_in_rest' => true)
+    );
     register_term_meta('', 'tagDisplayOrder', 
         array('show_in_rest' => true)
     );
@@ -34,6 +37,10 @@ add_action( 'post_tag_add_form_fields', 'rudr_add_term_fields' );
 function rudr_add_term_fields( $taxonomy ) {
 	?>
         <div class="form-field">
+			<label for="showInTop">Show in Top</label>
+			<input type="checkbox" name="showInTop" id="showInTop" />
+		</div>
+        <div class="form-field">
 			<label for="isHotTag">Hot Tag</label>
 			<input type="checkbox" name="isHotTag" id="isHotTag" />
 		</div>
@@ -54,11 +61,23 @@ add_action( 'category_edit_form_fields', 'rudr_edit_term_fields', 10, 2 );
 add_action( 'post_tag_edit_form_fields', 'rudr_edit_term_fields', 10, 2 );
 function rudr_edit_term_fields( $term, $taxonomy ) {
 
+    $is_top = get_term_meta( $term->term_id, 'showInTop', true );
     $is_hot_tag = get_term_meta( $term->term_id, 'isHotTag', true );
     $text_field = get_term_meta( $term->term_id, 'tagDisplayOrder', true );
 	$image_id = get_term_meta( $term->term_id, 'tagImage', true );
 
 	?>
+    <tr class="form-field">
+        <th><label for="showInTop">Show in Top</label></th>
+        <td>
+            <input 
+                name="showInTop" 
+                id="showInTop" 
+                type="checkbox" 
+                <?php echo isset($is_top[0]) ? "checked" : ""; ?>
+            />
+        </td>
+    </tr>
     <tr class="form-field">
         <th><label for="isHotTag">Hot Tag</label></th>
         <td>
@@ -107,6 +126,16 @@ function rudr_save_term_fields( $term_id ) {
         'isHotTag',
         $_POST[ 'isHotTag' ]
     );
+
+    if( isset( $_POST['showInTop'] ) && ! empty( $_POST['showInTop'] ) ) {
+        update_term_meta(
+            $term_id,
+            'showInTop',
+            sanitize_text_field( $_POST[ 'showInTop' ] )
+        );
+    } else {
+        delete_term_meta( $term_id, 'showInTop' );
+    }
 
     if( isset( $_POST['tagDisplayOrder'] ) && ! empty( $_POST['tagDisplayOrder'] ) ) {
         update_term_meta(

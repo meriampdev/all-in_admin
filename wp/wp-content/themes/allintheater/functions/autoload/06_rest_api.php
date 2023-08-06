@@ -67,6 +67,11 @@ add_action( 'rest_api_init', function () {
       'methods' => 'GET',
       'callback' => 'get_hot_tags',
     ));
+
+    register_rest_route( 'api/v1/', 'get-top-categories', array(
+      'methods' => 'GET',
+      'callback' => 'get_top_categories',
+    ));
 } );
 
 function format_response($posts) {
@@ -204,6 +209,35 @@ function get_articles_by_acf(WP_REST_Request $request) {
 function get_hot_tags(WP_REST_Request $request) {
   $args = array( 
     'meta_key'      => 'isHotTag',
+    'meta_value'    => 'on',
+    'hide_empty' => false
+  );
+	$args = wp_parse_args( $args, $defaults = array() );
+	$tags = get_categories( $args );
+
+	if ( empty( $tags ) ) {
+		$tags = array();
+	} else {
+		$tags = apply_filters( 'get_categories', $tags, $args );
+    
+    foreach ($tags as $tag) {
+      $meta_data = get_term_meta($tag->term_id);
+      $tagImageSrc = wp_get_attachment_image_url( $meta_data['tagImage'][0], 'full' );
+      $tag->tagImageSrc = $tagImageSrc;
+      $tag->meta = $meta_data;
+      $tag->order = $meta_data['tagDisplayOrder'][0];
+    }
+	}
+
+  usort($tags, function($a, $b) {return strcmp($a->order, $b->order);});
+  $response = new WP_REST_Response( $tags );
+
+  return $response;
+}
+
+function get_top_categories(WP_REST_Request $request) {
+  $args = array( 
+    'meta_key'      => 'showInTop',
     'meta_value'    => 'on',
     'hide_empty' => false
   );
