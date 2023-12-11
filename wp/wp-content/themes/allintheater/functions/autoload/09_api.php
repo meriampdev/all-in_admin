@@ -7,12 +7,14 @@ add_action('rest_api_init', function() {
         'methods' => 'POST',
         //エンドポイントにアクセスした際に実行される関数
         'callback' => 'send_inquiry_email',
+        'permission_callback' => '__return_true'
     ]);
 
     register_rest_route( '/api', '/test', [
       'methods' => 'get',
       //エンドポイントにアクセスした際に実行される関数
       'callback' => 'test',
+      'permission_callback' => '__return_true'
   ]);
 });
 
@@ -43,26 +45,37 @@ function send_inquiry_email(WP_REST_Request $request) {
 
   $signature = SIGNATURE;
 
-  $subject = '【株式会社allintheater】お問い合せありがとうございます。';
+  $subject = '【Umplex】お問い合わせありがとうございます。';
   $to = $email;
 
   $message = <<<EOM
-*このメールはシステムからの自動返信です。
+Umplexにお問い合わせいただきありがとうございます。
 
-株式会社allintheaterへのお問い合せありがとうございました。
-以下の内容でお問い合せを受け付け致しました。
+下記の内容でお問い合わせをうけたまわりました。
+弊社で内容を確認の上、折り返しご連絡いたしますのでいましばらくお待ち下さい。
 
-担当者からご連絡致しますので、今しばらくお待ちください。
+-----------------------------------
 
-種別: $inquiry_type
-会社名: $company_name
-お問い合わせ項目: $inquiry
-氏名: $name
-メールアドレス: $email
-部署名・部門名: $department_name
-氏名(漢字): $name_kanji
-氏名(ふりがな): $name_furigana
-お問い合わせ内容: $inquiry
+種別: 
+$inquiry_type
+
+会社名・組織名: 
+$company_name
+
+部署名・部門名: 
+$department_name
+
+氏名(漢字):
+$name_kanji
+
+氏名(ふりがな): 
+$name_furigana
+
+メールアドレス: 
+$email
+
+問い合わせ内容: 
+$inquiry
 
 $signature
 EOM;
@@ -72,25 +85,36 @@ EOM;
   // $r = wp_mail( $to, $subject, 'test mail' );
 
   $admin_message = <<<EOM
-お問い合せを受信しました。
+下記の内容で問い合わせがありました。
+3営業日中に折り返しの対応をお願いいたします。
+  
+-----------------------------------
 
-以下内容でお問い合わせがありましたので、対応お願いします。
+種別: 
+$inquiry_type
 
+会社名・組織名: 
+$company_name
 
-種別: $inquiry_type
-会社名: $company_name
-お問い合わせ項目: $inquiry
-氏名: $name
-メールアドレス: $email
-部署名・部門名: $department_name
-氏名(漢字): $name_kanji
-氏名(ふりがな): $name_furigana
-お問い合わせ内容: $inquiry
+部署名・部門名: 
+$department_name
+
+氏名(漢字):
+$name_kanji
+
+氏名(ふりがな): 
+$name_furigana
+
+メールアドレス: 
+$email
+
+問い合わせ内容: 
+$inquiry
 
 EOM;
 
   // send Email
-  $r2 = wp_mail( "allin.theaterweb@gmail.com", "【株式会社allintheater】お問い合せを受信しました。", $admin_message );
+  $r2 = wp_mail( "info_umplex@allhero.co.jp", "【Umplex】お問い合わせがありました。", $admin_message );
 
   $response = new WP_REST_Response(["success" => $r2]);
   $response->set_status(200);

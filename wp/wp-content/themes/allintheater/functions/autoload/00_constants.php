@@ -41,21 +41,13 @@ add_action('init', function () {
     /**
      * Head tag information
      */
-    define('DESCRIPTION', 'IPテック企業・株式会社allintheaterのコーポレートサイト。タレント肖像データのサブスクリプション「Skettt」と著名人から動画をもらう動画プラットフォーム「VOM」を開発・運営しています。');
-    define('SITE_TITLE', '株式会社allintheater（ヴンダーバー）｜IP活用を科学する');
-    define('SITE_NAME', '株式会社allintheater（ヴンダーバー）');
+    define('DESCRIPTION', 'Umplexはエンジニアや営業といった職種の垣根を超え、「感情」を軸に求人情報を検索できる新機軸の求人サイトです。さまざまな感情が巻き起こるストーリー仕立ての求人広告が、先入観にとらわれない企業と求職者の出会いを提供します。');
+    define('SITE_TITLE', 'Umplex｜「感情」で検索する求人情報サイト');
+    define('SITE_NAME', 'Umplex');
 
     define('SIGNATURE', <<<EOM
 =====================================
-株式会社allintheater
-
-TEL: 03-1234-2766
-MAIL: allin.theaterweb@gmail.com
-URL: http://dev.all-in.jyminc.com/
-
-123-1234
-東京都渋谷区渋谷三丁目7番2号
-第3矢木ビル 9階
+【Umplex】
 =====================================
 EOM);
 
@@ -145,3 +137,69 @@ EOM);
     //     'default' => 'original'
     // ]);
 }, 0);
+
+add_filter( 'preview_post_link', 'the_preview_fix', 10, 2 );
+
+function the_preview_fix($link, $post) {
+    $site_url = site_url();
+    if($post->post_type == 'contents') {
+        if($post->post_name == 'job-board-page') {
+            return "$site_url/jobboard";
+        } else if($post->post_name == 'about-page') {
+            return "$site_url/about";
+        } else {
+            return "$site_url/story/detail?preview=true&id=$post->ID";
+        }
+    } else {
+        return "$site_url/story/detail?preview=true&id=$post->ID";
+    }
+}
+
+function change_link( $permalink, $post ) {
+    $site_url = site_url();
+    if($post->post_type == 'contents') {
+        if($post->post_name == 'job-board-page') {
+            return "$site_url/jobboard";
+        } else if($post->post_name == 'about-page') {
+            return "$site_url/about";
+        } else {
+            return "$site_url/story/detail?slug=$post->post_name";
+        }
+    } else {
+        return "$site_url/story/detail?slug=$post->post_name";
+    }
+}
+add_filter('post_type_link',"change_link",10,2);
+
+// Workaround script until there's an official solution for https://github.com/WordPress/gutenberg/issues/13998
+function fix_preview_link_on_draft() {
+    echo '<script type="text/javascript">
+        jQuery(document).ready(function () {
+            const checkPreviewInterval = setTimeout(checkPreview, 1000);
+        //checkPreview();
+        function checkPreview() {
+            const ToggleButton = jQuery(".block-editor-post-preview__button-toggle");
+            const editorPreviewButton = jQuery(".editor-post-preview");
+            ToggleButton.hide();
+            editorPreviewButton.show();
+            if (editorPreviewButton.length && editorPreviewButton.attr("href") !== "' . get_preview_post_link() . '" ) {
+                editorPreviewButton.attr("href", "' . get_preview_post_link() . '");
+                editorPreviewButton.off();
+                editorPreviewButton.click(false);
+                editorPreviewButton.on("click", function() {
+                    setTimeout(function() { 
+                        const win = window.open("' . get_preview_post_link() . '", "_blank");
+                        if (win) {
+                            win.focus();
+                        }
+                    }, 1000);
+                });
+            }
+        }
+    });
+    </script>';
+}
+
+add_action('admin_footer', 'fix_preview_link_on_draft');
+
+add_filter( 'big_image_size_threshold', '__return_false' ); 

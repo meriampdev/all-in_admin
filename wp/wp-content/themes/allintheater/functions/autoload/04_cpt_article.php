@@ -28,7 +28,7 @@ function custom_post_type() {
           'description'         => __( 'Article news and reviews'),
           'labels'              => $labels,
           'supports'            => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'comments', 'revisions', 'custom-fields'),
-          'taxonomies'          => array( 'category' ),
+          'taxonomies'          => array( 'category', 'post_tag' ),
           /* A hierarchical CPT is like Pages and can have
           * Parent and child items. A non-hierarchical CPT
           * is like Posts.
@@ -142,6 +142,20 @@ if( function_exists('acf_add_local_field_group') ):
         'layout' => 'horizontal',
         'fields' => array (
             array (
+                'key' => 'article_image_content',
+                'label' => 'Article Content',
+                'name' => 'article_image_content',
+                'type' => 'image',
+                'layout' => 'horizontal',
+            ),
+            array (
+                'key' => 'animation_link',
+                'label' => 'アニメーションを見る',
+                'name' => 'animation_link',
+                'type' => 'link',
+                'layout' => 'horizontal',
+            ),
+            array (
                 'key' => 'order',
                 'label' => 'Display Order',
                 'name' => 'order',
@@ -205,8 +219,8 @@ endif;
  *  Return featured_image url
  */
 
-add_action( 'rest_api_init', 'add_thumbnail_to_JSON' );
-function add_thumbnail_to_JSON() {
+add_action( 'rest_api_init', 'add_image_to_JSON' );
+function add_image_to_JSON() {
 
     register_rest_field( 
         'articles', 
@@ -227,6 +241,16 @@ function add_thumbnail_to_JSON() {
             'schema'          => null,
         )
     );
+
+    register_rest_field( 
+        'articles', 
+        'article_image_content', 
+        array(
+            'get_callback'    => 'get_content_image_src',
+            'update_callback' => null,
+            'schema'          => null,
+        )
+    );
 }
 
 function get_image_src( $object, $field_name, $request ) {
@@ -239,13 +263,38 @@ function get_image_src( $object, $field_name, $request ) {
 }
 
 function get_rv_image_src( $object, $field_name, $request ) {
-    $feat_img_array = wp_get_attachment_image_src(
-      $object['acf']['recruitment_image'], 
-      'full',  
-      false
-    );
-    return $feat_img_array[0];
-  }
+    if (!empty($object['acf'])) {
+        if (!empty($object['acf']['recruitment_image'])) {
+            $feat_img_array = wp_get_attachment_image_src(
+                $object['acf']['recruitment_image'], 
+                'full',  
+                false
+            );
+            return $feat_img_array[0];
+        }
+
+        return null;
+    } 
+
+    return null;
+}
+
+function get_content_image_src( $object, $field_name, $request ) {
+    if (!empty($object['acf'])) {
+        if (!empty($object['acf']['article_image_content'])) {
+            $feat_img_array = wp_get_attachment_image_src(
+                $object['acf']['article_image_content'], 
+                'full',  
+                false
+            );
+            return $feat_img_array[0];
+        }
+
+        return null;
+    } 
+
+    return null;
+}
 
 
 /**

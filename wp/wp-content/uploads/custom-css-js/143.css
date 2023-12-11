@@ -1,0 +1,18 @@
+<!-- start Simple Custom CSS and JS -->
+<style type="text/css">
+/* ここにCSSコードを追加
+
+例:
+.example {
+    color: red;
+}
+
+CSS の知識に磨きをかけるためにご覧ください。
+http://www.w3schools.com/css/css_syntax.asp
+
+コメント終わり */ 
+
+.rudr-upload img {
+  max-width: 400px;
+}</style>
+<!-- end Simple Custom CSS and JS -->

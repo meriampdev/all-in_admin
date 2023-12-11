@@ -20,6 +20,18 @@ function custom_term_meta_setup() {
             )
         )
     );
+    register_term_meta('', 'tagImageSP', 
+        array(
+            'show_in_rest' => array(
+                'prepare_callback' => function( $attachment ) {
+                    return wp_get_attachment_image_url( $attachment, 'full' );
+                },
+            )
+        )
+    );
+    register_term_meta('', 'pickup_article', 
+        array('show_in_rest' => true)
+    );
 }
 
 function ag_filter_post_json($response, $post, $context) {
@@ -49,10 +61,16 @@ function rudr_add_term_fields( $taxonomy ) {
 			<input type="number" name="tagDisplayOrder" id="tagDisplayOrder" />
 		</div>
 		<div class="form-field">
-			<label>タグ画像</label>
+			<label>タグ画像 PC</label>
 			<a href="#" class="button rudr-upload">画像をアップロードする</a>
 			<a href="#" class="rudr-remove" style="display:none">画像を削除する</a>
 			<input type="hidden" name="tagImage" value="">
+		</div>
+        <div class="form-field">
+			<label>タグ画像 SP</label>
+			<a href="#" class="button rudr-upload">画像をアップロードする</a>
+			<a href="#" class="rudr-remove" style="display:none">画像を削除する</a>
+			<input type="hidden" name="tagImageSP" value="">
 		</div>
 	<?php
 }
@@ -65,8 +83,42 @@ function rudr_edit_term_fields( $term, $taxonomy ) {
     $is_hot_tag = get_term_meta( $term->term_id, 'isHotTag', true );
     $text_field = get_term_meta( $term->term_id, 'tagDisplayOrder', true );
 	$image_id = get_term_meta( $term->term_id, 'tagImage', true );
+    $sp_image_id = get_term_meta( $term->term_id, 'tagImageSP', true );
+    $pickup = get_term_meta( $term->term_id, 'pickup_article', true );
+
+    $args = array(
+        'category__in' => $term->term_id,
+        'numberposts'  => -1,
+        'post_type'   => 'articles'
+      );
+    $posts_by_tag = get_posts( $args );
 
 	?>
+    <tr class="form-field">
+        <th><label for="showInTop">Pick Up</label></th>
+        <td>
+            <select 
+                name="pickup_article" 
+                id="pickup_article"
+                value="<?php echo esc_attr( $pickup ) ?>"
+            >
+                <option value="-1">Select</option>
+                <?php foreach($posts_by_tag as $article): 
+                    $selected = '';
+                    if ($pickup == $article->post_name)
+                        $selected = ' selected="selected"';
+                    ?>
+                    ?>
+                    <option 
+                        <?php echo $selected; ?>
+                        value="<?php echo $article->post_name ?>"
+                    >
+                        <?php echo $article->post_title ?>
+                    </option>
+                <?php endforeach ?>
+            </select>
+        </td>
+    </tr>
     <tr class="form-field">
         <th><label for="showInTop">Show in Top</label></th>
         <td>
@@ -97,12 +149,12 @@ function rudr_edit_term_fields( $term, $taxonomy ) {
     </tr>
     <tr class="form-field">
 		<th>
-			<label for="tagImage">タグ画像</label>
+			<label for="tagImage">タグ画像 PC</label>
 		</th>
 		<td>
 			<?php if( $image = wp_get_attachment_image_url( $image_id, 'medium' ) ) : ?>
 				<a href="#" class="rudr-upload">
-					<img src="<?php echo esc_url( $image ) ?>" />
+					<img src="<?php echo esc_url( $image ) ?>" style="max-width: 500px"  />
 				</a>
 				<a href="#" class="rudr-remove">画像を削除する</a>
 				<input type="hidden" name="tagImage" value="<?php echo absint( $image_id ) ?>">
@@ -110,6 +162,24 @@ function rudr_edit_term_fields( $term, $taxonomy ) {
 				<a href="#" class="button rudr-upload">画像をアップロードする</a>
 				<a href="#" class="rudr-remove" style="display:none">画像を削除する</a>
 				<input type="hidden" name="tagImage" value="">
+			<?php endif; ?>
+		</td>
+	</tr>
+    <tr class="form-field">
+		<th>
+			<label for="tagImageSP">タグ画像 SP</label>
+		</th>
+		<td>
+			<?php if( $image = wp_get_attachment_image_url( $sp_image_id, 'medium' ) ) : ?>
+				<a href="#" class="rudr-upload">
+					<img src="<?php echo esc_url( $image ) ?>" style="max-width: 500px" />
+				</a>
+				<a href="#" class="rudr-remove">画像を削除する</a>
+				<input type="hidden" name="tagImageSP" value="<?php echo absint( $sp_image_id ) ?>">
+			<?php else : ?>
+				<a href="#" class="button rudr-upload">画像をアップロードする</a>
+				<a href="#" class="rudr-remove" style="display:none">画像を削除する</a>
+				<input type="hidden" name="tagImageSP" value="">
 			<?php endif; ?>
 		</td>
 	</tr><?php
@@ -155,6 +225,26 @@ function rudr_save_term_fields( $term_id ) {
         );
     } else {
         delete_term_meta( $term_id, 'tagImage' );
+    }
+
+    if( isset( $_POST['tagImageSP'] ) && ! empty( $_POST['tagImageSP'] ) ) {
+        update_term_meta(
+            $term_id,
+            'tagImageSP',
+            absint( $_POST[ 'tagImageSP' ] )
+        );
+    } else {
+        delete_term_meta( $term_id, 'tagImageSP' );
+    }
+
+    if( isset( $_POST['pickup_article'] ) && ! empty( $_POST['pickup_article'] ) ) {
+        update_term_meta(
+            $term_id,
+            'pickup_article',
+            sanitize_text_field( $_POST[ 'pickup_article' ] )
+        );
+    } else {
+        delete_term_meta( $term_id, 'pickup_article' );
     }
 }
 
